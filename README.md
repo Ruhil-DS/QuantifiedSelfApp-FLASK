@@ -7,6 +7,7 @@
   - Open your terminal in the respective folder of the repository/project.
   - From there, simply run the command ```python3 main.py``` (recommended) or ```python main.py```
   - Then, assuming the default port 5000, simply head to any of the following URLs 
+        
         - http://localhost:5000/
          
         - http://0.0.0.0:5000/
