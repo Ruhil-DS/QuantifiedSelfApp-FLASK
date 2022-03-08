@@ -21,6 +21,7 @@
 - Each user gets the CRUD functionality for their trackers and events(logs)
       - CRUD: Create, Read, Update, Delete
 - I have used the following major technologies:
+      
       - Python
       - Flask
       - Flask-SQLAlchemy
