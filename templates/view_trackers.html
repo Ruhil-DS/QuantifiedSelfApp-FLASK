@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyf Record - View Trackers</title>
+    <link rel="stylesheet" href="../static/img_home.css">
+    <link rel="stylesheet" href="../static/nav_bar.css">
+    <script src="../static/nav_bar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .btn-outline-success:hover{
+            background-color: #46b8da !important;
+        }
+        .btn-outline-success{
+            color: #f6f6f6 !important;
+            border: #46b8da !important;
+        }
+        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+
+        .table-row {
+                    cursor:pointer;
+                   }
+
+    </style>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin = "anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body class="bg-dark" style="color: #38b6ff">
+
+<!-----------START Of NAVIGATION BAR--------->
+<div class="offcanvas offcanvas-start bg-dark" id="nav_left">
+  <div class="offcanvas-header">
+    <h1 class="offcanvas-title" style="font-family: 'ui-monospace'">&nbsp; &nbsp;Lyf Record <img
+            src="../static/images/logo.svg" width="60" height="60" align="left"></h1>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" ></button>
+  </div>
+  <div class="offcanvas-body">
+    <img src="../static/images/baymax_loop.gif" width="150" height="150" align="left">
+    <br>
+    <div style="font-size: 50px; color: #c51313">{{user}} !</div>
+
+            <div class="container">
+                <div class="d-grid gap-2 col-3 mx-left">
+                  <br><br><br><br><br>
+                 <div class="col"><span><a  id="len2" class="hoverable" href="/dashboard/">Dashboard</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/view_trackers">View Trackers</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/create/">Add Tracker</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/signout/">Sign out</a></span></div>
+                </div>
+            </div>
+  </div>
+</div>
+
+    <button class="btn btn-outline-success me-2 btn-lg " type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#nav_left" style="width: 100%">
+            <i class="fa fa-bars" style="font-size:30px"></i>
+    </button>
+
+<!-----------END Of NAVIGATION BAR--------->
+
+
+<div class="col-md-5 position-relative position-absolute start-50 translate-middle-x">
+
+    <div class="container row">
+      <div class="row justify-content-center display-5"><i><u>Your Trackers</u></i></div>
+
+      <p></p>
+      <br>
+      <br>
+      <span style="font-family: 'Courier New'; color: gray">
+          Here is a list of <span style="color: #20c4b0">your trackers</span>
+          <br> Click on a tracker row to view more details.
+      </span>
+      <br>
+</div>
+<br><br>
+
+<table class="table table-dark table-hover">
+<thead>
+    <tr>
+      <th scope="col">S no</th>
+      <th scope="col">Tracker Name</th>
+      <th scope="col">Tracker Description</th>
+      <th scope="col">Tracker Type</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for tracker in trackers %}
+    <tr class="table-row"  onclick="location.href='/{{tracker.tracker_id}}/details'">
+      <th scope="row">{{loop.index}}</th>
+      <td>{{tracker.name}}</td>
+      <td>{{tracker.description}}</td>
+      <td>{{tracker.type}}</td>
+    </tr>
+  {%endfor%}
+
+
+  </tbody>
+</table>
+</div>
+
+</body>
+</html>

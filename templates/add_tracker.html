@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyf Record - Add a Tracker</title>
+    <link rel="stylesheet" href="../static/img_home.css">
+    <link rel="stylesheet" href="../static/nav_bar.css">
+    <script src="../static/nav_bar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .btn-outline-success:hover{
+            background-color: #46b8da !important;
+        }
+        .btn-outline-success{
+            color: #f6f6f6 !important;
+            border: #46b8da !important;
+        }
+        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+    </style>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin = "anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body class="bg-dark" style="color: #38b6ff">
+
+<!-----------START Of NAVIGATION BAR--------->
+<div class="offcanvas offcanvas-start bg-dark" id="nav_left">
+  <div class="offcanvas-header">
+    <h1 class="offcanvas-title" style="font-family: 'ui-monospace'">&nbsp; &nbsp;Lyf Record <img
+            src="../static/images/logo.svg" width="60" height="60" align="left"></h1>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" ></button>
+  </div>
+  <div class="offcanvas-body">
+    <img src="../static/images/baymax_loop.gif" width="150" height="150" align="left">
+    <br>
+    <div style="font-size: 50px; color: #c51313">{{user}} !</div>
+
+            <div class="container">
+                <div class="d-grid gap-2 col-3 mx-left">
+                  <br><br><br><br><br>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/dashboard/">Dashboard</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/view_trackers">View Trackers</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/create/">Add Tracker</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/signout/">Sign out</a></span></div>
+                </div>
+            </div>
+  </div>
+</div>
+
+    <button class="btn btn-outline-success me-2 btn-lg " type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#nav_left" style="width: 100%">
+            <i class="fa fa-bars" style="font-size:30px"></i>
+    </button>
+
+<!-----------END Of NAVIGATION BAR--------->
+
+
+<div class="col-md-5 position-relative position-absolute start-50 translate-middle-x">
+
+    <div class="container row">
+      <div class="row justify-content-center display-5"><i><u>Add a Tracker</u></i></div>
+
+      <p></p>
+      <br>
+      <br>
+      <span style="font-family: 'Courier New'; color: gray">
+          Here, you can add your <span style="color: #20c4b0">desired trackers</span>
+      </span>
+      <br>
+
+
+</div>
+<br><br>
+
+    <form action="/create/" method="POST" id="create-tracker-form">
+        <div>
+            <label>Tracker Name:</label>
+            <label style="color: red">*</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="text" name="tracker_name" required />
+        </div><br><br>
+
+        <div>
+            <label>Tracker Type:</label>
+            <label style="color: red">*</label> &nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" name="tracker_type" id="numerical_radio" value="num" required>
+            <label class="form-check-label" for="numerical_radio">Numerical </label>&nbsp;&nbsp;&nbsp;
+
+            <input class="form-check-input" type="radio" name="tracker_type" id="time_dur_radio" value="time_dur">
+            <label class="form-check-label" for="time_dur_radio">Time Duration</label>&nbsp;&nbsp;&nbsp;
+
+            <input class="form-check-input" type="radio" name="tracker_type" id="bool_radio" value="bool">
+            <label class="form-check-label" for="bool_radio">Boolean</label>&nbsp;&nbsp;&nbsp;
+
+            <input class="form-check-input" type="radio" name="tracker_type" id="mc_radio" value="mc">
+            <label class="form-check-label" for="mc_radio">Multi Choice</label>&nbsp;
+        </div><br><br>
+
+        <div>
+            <label>Tracker Description:</label>
+            <input type="text" name="tracker_desc" />
+        </div><br><br>
+
+        <div>
+            <label>Choices(comma sep.)</label>
+            <input type="text" name="mc_choices" /><br>
+            <span style="color: red">(Fill this only if choosing Multi Choice option)</span>
+        </div><br><br>
+
+        <div>
+            <input type="submit" value = "Submit">
+        </div>
+    </form>
+
+    {% if error == "Incorrect" %}
+
+				<script>
+					window.alert("An error encountered. Please check your form again and try again!")
+				</script>
+    {%endif%}
+
+</body>
+</html>

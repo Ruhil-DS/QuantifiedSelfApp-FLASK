@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyf Record - Add a Tracker</title>
+    <link rel="stylesheet" href="/static/img_home.css">
+    <link rel="stylesheet" href="/static/nav_bar.css">
+    <script src="/static/nav_bar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        form{
+            align-content: center !important;
+        }
+        .btn-outline-success:hover{
+            background-color: #46b8da !important;
+        }
+        .btn-outline-success{
+            color: #f6f6f6 !important;
+            border: #46b8da !important;
+        }
+        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+    </style>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin = "anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body class="bg-dark" style="color: #38b6ff">
+
+<!-----------START Of NAVIGATION BAR--------->
+<div class="offcanvas offcanvas-start bg-dark" id="nav_left">
+  <div class="offcanvas-header">
+    <h1 class="offcanvas-title" style="font-family: 'ui-monospace'">&nbsp; &nbsp;Lyf Record <img
+            src="/static/images/logo.svg" width="60" height="60" align="left"></h1>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" ></button>
+  </div>
+  <div class="offcanvas-body">
+    <img src="/static/images/baymax_loop.gif" width="150" height="150" align="left">
+    <br>
+    <div style="font-size: 50px; color: #c51313">{{user}} !</div>
+
+            <div class="container">
+                <div class="d-grid gap-2 col-3 mx-left">
+                  <br><br><br><br><br>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/dashboard/">Dashboard</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/view_trackers">View Trackers</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/create/">Add Tracker</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/signout/">Sign out</a></span></div>
+                </div>
+            </div>
+  </div>
+</div>
+
+    <button class="btn btn-outline-success me-2 btn-lg " type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#nav_left" style="width: 100%">
+            <i class="fa fa-bars" style="font-size:30px"></i>
+    </button>
+
+<!-----------END Of NAVIGATION BAR--------->
+
+
+<div class="col-md-5 position-relative position-absolute start-50 translate-middle-x ">
+
+    <div class="container row">
+      <div class="row justify-content-center display-5"><i><u>Logging your Tracker</u></i></div>
+
+      <p></p>
+      <br>
+      <br>
+      <span style="font-family: 'Courier New'; color: gray">
+          Here, you can log values to your <span style="color: #20c4b0">tracker</span>
+          <br><br>
+          Add all the relevant information in the below <span style="color: #20c4b0">form</span>
+      </span>
+      <br>
+    </div>
+<br><br>
+
+    <form action="/{{tracker.tracker_id}}/log/" method="POST" id="log-tracker-form">
+        <div>
+
+            <div class="display-6">Logging -  {{tracker.name}} </div>
+            <br>
+            <span style="color: #20c4b0">Description :</span>
+            <span style="font-family: 'Courier New'; color: gray">{{tracker.description}}</span>
+
+        </div><br><br>
+
+
+
+        {% if tracker.type == 'num' %}
+        <div>
+            <label>Tracker Value: </label>
+            <label style="color: red">*</label>
+            <br>
+            <input type="number" step="0.00001" name="tracker_value" required/>
+        </div><br><br>
+
+
+
+        {% elif tracker.type == 'time_dur' %}
+        <div>
+            <label>Start time :</label>
+            <label style="color: red">*</label>
+            <br>
+            <input type="datetime-local" name="tracker_value_start" required/>
+        </div><br><br>
+        <div>
+            <label>End time :</label>
+            <label style="color: red">*</label>
+            <br>
+            <input type="datetime-local" name="tracker_value_end" required/>
+        </div><br><br>
+
+
+        {% elif tracker.type == 'bool' %}
+        <div>
+            <label>Tracker Value :</label>
+            <label style="color: red">*</label><br>
+            <input class="form-check-input" type="radio" name="tracker_value" id="true_radio" value="True" required>
+            <label class="form-check-label" for="true_radio">True</label>&nbsp;&nbsp;&nbsp;
+
+            <input class="form-check-input" type="radio" name="tracker_value" id="false_radio" value="False">
+            <label class="form-check-label" for="true_radio">False</label>&nbsp;
+        </div>
+
+
+
+        {% elif tracker.type == 'mc' %}
+        <div>
+            <label>Tracker choices :</label>
+            <label style="color: red">*</label><br><br>
+
+            {% for choice in choices %}
+            <input class="form-check-input" type="checkbox" name="tracker_value" id="mc_check"
+                   value="{{choice}}">
+            <label class="form-check-label">{{choice}}</label>&nbsp;&nbsp;&nbsp;
+            {% endfor %}
+        </div>
+        {%endif%}
+
+
+        <br><br>
+
+        <div>
+            <label>Timestamp when logging :</label>
+            <label style="color: red">*</label><br>
+            <label style="color: red">(click on the current date to automatically select current date time)</label>
+            <br><br>
+            <input type="datetime-local" name="tracker_timestamp" id="log_timestamp" value="{{time_value}}" required>
+        </div><br><br>
+
+        <div>
+            <label>Note :</label><br>
+            <textarea name="note" style="width: 400px; height: 100px"> </textarea><br>
+        </div><br><br>
+
+        <div>
+            <input class="btn-outline-primary" type="submit" value = "Submit" >
+        </div>
+    </form>
+
+
+</body>
+</html>

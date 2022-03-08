@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lyf Record - Dashboard</title>
+    <link rel="stylesheet" href="../static/img_home.css">
+    <link rel="stylesheet" href="../static/nav_bar.css">
+    <script src="../static/nav_bar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .btn-outline-success:hover{
+            background-color: #46b8da !important;
+        }
+        .btn-outline-success{
+            color: #f6f6f6 !important;
+            border: #46b8da !important;
+        }
+        html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+    </style>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin = "anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+function myFunction() {
+  document.getElementById("myTable").deleteRow(-1);
+}
+</script>
+
+</head>
+<body class="bg-dark" style="color: #38b6ff">
+
+<!-----------START Of NAVIGATION BAR--------->
+<div class="offcanvas offcanvas-start bg-dark" id="nav_left">
+  <div class="offcanvas-header">
+    <h1 class="offcanvas-title" style="font-family: 'ui-monospace'">&nbsp; &nbsp;Lyf Record <img src="../static/images/logo.svg" width="60" height="60" align="left"></h1>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" ></button>
+  </div>
+  <div class="offcanvas-body">
+    <img src="../static/images/baymax_loop.gif" width="150" height="150" align="left">
+    <br>
+    <div style="font-size: 50px; color: #c51313">{{user}} !</div>
+
+            <div class="container">
+                <div class="d-grid gap-2 col-3 mx-left">
+                  <br><br><br><br><br>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/dashboard/">Dashboard</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/view_trackers">View Trackers</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/create/">Add Tracker</a></span></div>
+                  <div class="col"><span><a  id="len2" class="hoverable" href="/signout/">Sign out</a></span></div>
+
+                </div>
+            </div>
+  </div>
+</div>
+
+    <button class="btn btn-outline-success me-2 btn-lg " type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#nav_left" style="width: 100%">
+            <i class="fa fa-bars" style="font-size:30px"></i>
+    </button>
+
+<!-----------END Of NAVIGATION BAR--------->
+
+
+
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" >
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+  </header>
+
+  <div class="w3-row-padding w3-margin-bottom">
+    <div class="w3-quarter">
+      <div class="w3-container w3-white w3-padding-16">
+        <div class="w3-left">
+          <img src="https://static.thenounproject.com/png/1391881-200.png" height="50" width="50">
+        </div>
+
+        <div class="w3-clear"></div>
+        <h4>Welcome back, {{user}}</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-blue w3-padding-16">
+        <div class="w3-left"><i class="fa fa-calendar w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>{{streak}}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Current Streak</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-teal w3-padding-16">
+        <div class="w3-left"><i class="fa fa-tv w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>{{tracker_count}}</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>No. of trackers</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-orange w3-text-white w3-padding-16">
+        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          {%if 'day' in member_since%}
+          <h3>{{member_since}}</h3>
+          {%else%}
+          <h3>0 days</h3>
+          {%endif%}
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Member Since</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-panel">
+    <div class="w3-row-padding" style="margin:10 -26px">
+      <div class="w3-third">
+        <h5>Summary graph</h5>
+        <img src="../static/images/homepage.png" style="width:80%;" class="w3-white" >
+      </div>
+      <div class="w3-twothird">
+        <h5>Your Trackers</h5>
+        {%if trackers%}
+        <table class="table table-dark table-hover">
+          <thead>
+            <tr>
+              <th scope="col">S no</th>
+              <th scope="col">Tracker Name</th>
+              <th scope="col">Tracker Type</th>
+              <th scope="col">Last logged</th>
+              <th scope="col">Actions</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for tracker in trackers %}
+              <tr>
+                <th scope="row">{{loop.index}}</th>
+                  <td>{{tracker.name}}</td>
+                  <td>{{tracker.type}}</td>
+                  <td>{{tracker.last_log}}</td>
+                  <td><a href="/{{tracker.tracker_id}}/log">log value</a> / <a href="/{{tracker.tracker_id}}/update">update</a>
+                    / <a onclick="myFunction()" href="/{{tracker.tracker_id}}/delete">delete</a> </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+</table>
+        {%else%}
+          <img src="/static/images/404_no_tracker.gif", width="270" height="347">
+          {%endif%}
+
+
+
+      </div>
+    </div>
+  </div>
+  <br>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-success me-2 btn-lg " data-bs-toggle="modal"
+        data-bs-target="#exampleModal" style="width: 50%;">
+  Click for Tracker functionalities
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">What would you like to do?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="color: #0b0b0b; text-align: left">
+        Click on any of the buttons to perform an action.
+        <br><br>
+        You can create or view all of your trackers.
+        <br><br>
+        To update or delete, kindly check the "Your Trackers" list, or you could view all the trackers and then make
+        relevant changes.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='/view_trackers'">View trackers</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='/create'">Add a tracker</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
+
+</body>
+</html>
+
+
+</body>
+</html>
