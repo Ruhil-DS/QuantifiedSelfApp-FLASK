@@ -8,11 +8,11 @@
   - From there, simply run the command ```python3 main.py``` (recommended) or ```python main.py```
   - Then, assuming the default port 5000, simply head to any of the following URLs 
         
-        - http://localhost:5000/
+        http://localhost:5000/
          
-        - http://0.0.0.0:5000/
+        http://0.0.0.0:5000/
         
-        - http://127.0.0.1:5000/
+        http://127.0.0.1:5000/
 
 ------------------
 # Lyf Record
