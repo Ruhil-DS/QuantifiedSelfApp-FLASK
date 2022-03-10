@@ -1,2 +1,5 @@
 
 ~$port(VIDEO left).docx
+*.pyc
+Application/.DS_Store
+.DS_Store
