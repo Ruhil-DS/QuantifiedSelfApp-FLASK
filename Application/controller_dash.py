@@ -27,44 +27,50 @@ def signin_up():  # A function to signin or sign up the user. Streak count, sess
         return render_template("signup.html")
     if request.method == 'POST':  # If POST, then either signs in or signs up the user, according to the details received.
         try:  # Trying to sign in
-            si_un = request.form['si_un']
+            si_un = request.form['si_un'].lower()
             si_ps = request.form['si_ps']
             validity = USER.query.filter_by(username=si_un, password=si_ps).first()
 
             if validity is not None:
-                session['username'] = si_un
+                session['username'] = si_un  # Storing sign-in username in the session!
 
+                # Handling streak for the user
                 streak_data = STREAK.query.filter_by(username=si_un).first()
+                # If difference has '1 day' in it, then ->
                 if '1 day' in str(datetime.datetime.today() - datetime.datetime.strptime(streak_data.date, '%Y-%m-%d')):
                     streak_data.date = datetime.date.today()
-                    streak_data.count += 1
+                    streak_data.count += 1  # Add 1 to last streak count
                     db.session.commit()
+                # else if difference has 'days' in it, then the streak has been broken. So ->
                 elif 'days' in str(
                         datetime.datetime.today() - datetime.datetime.strptime(streak_data.date, '%Y-%m-%d')):
                     streak_data.date = datetime.date.today()
-                    streak_data.count = 1
+                    streak_data.count = 1  # Reset to 1
                     db.session.commit()
                 else:
                     pass
 
-                return redirect("/dashboard/")
-            elif validity is None:
+                return redirect("/dashboard/")  # After updating streak, redirect to the dashboard
+
+            elif validity is None:  # If validity fails, render signin-up page with error message
                 return render_template('signup.html', error="Incorrect")
 
-        except:  # else, it retrieves the sign up information.
-            su_un = request.form['su_un']
+        except:  # else, it retrieves the sign-up information.
+            su_un = request.form['su_un'].lower()
             su_ps = request.form['su_ps']
             su_email = request.form['su_email']
 
-            from datetime import date
-            creation_date = date.today()
-            try:
+            # Creation_date() function from timestamp.py, returns today's date
+            creation_date = date_today()
+
+            try:  # Try to add a user to the db
                 new_user = USER(username=su_un, password=su_ps, email=su_email, creation=creation_date)
                 streak_data = STREAK(username=su_un, date=date.today(), count=1)
                 db.session.add(new_user)
                 db.session.add(streak_data)
                 db.session.commit()
-            except:  # if everything fails, it renders the signup page with an error
+            except:  # if anything fails, it renders the signup page with an error
+                db.session.rollback()  # Roll-back just in case anything was changed
                 return render_template('signup.html', error='failed')
 
             return render_template('signup.html', error='success')  # at last, if everything works,
@@ -73,8 +79,8 @@ def signin_up():  # A function to signin or sign up the user. Streak count, sess
 
 @app.route("/dashboard/", methods=['GET'])
 def dashboard(): # Renders the dashboard according to the session.
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         # Streak count ->
         streak = STREAK.query.filter_by(username=si_un).first().count
         # ----------------------
@@ -96,17 +102,17 @@ def dashboard(): # Renders the dashboard according to the session.
         # List of trackers ->
         tracker_ids = USER_TRACKER.query.filter_by(username=si_un).distinct()
         trackers = []
-        for id in tracker_ids:
-            trackers.append(TRACKER.query.filter_by(tracker_id=id.tracker_id).first())
+        for t_id in tracker_ids:
+            trackers.append(TRACKER.query.filter_by(tracker_id=t_id.tracker_id).first())
         # ----------------------
 
         # Trend line graph ->
-        plot_homepage(si_un=si_un)
+        plot_homepage(si_un=si_un)  # Function from graph.py
         # ----------------------
         return render_template("dashboard.html", user=si_un, streak=streak, tracker_count=tracker_count,
                                member_since=member_since, trackers=trackers)
 
-    else:
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect('/signin-up/')
 
 
@@ -116,8 +122,8 @@ def view_trackers():
     # shows all the trackers with their details at the mentioned URI.
     # Filters the trackers according to the username(sign in user-name)
     # ----------------------
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         tracker_ids = USER_TRACKER.query.filter_by(username=si_un).distinct()
         trackers = []
         for tid in tracker_ids:
@@ -134,8 +140,9 @@ def create_tracker():
     # Creates a new tracker.
     # uses GET and POST methods.
     # ----------------------
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
+
         if request.method == 'GET':
             return render_template("add_tracker.html", user=si_un)
 
@@ -171,7 +178,8 @@ def create_tracker():
                 return render_template("add_tracker.html", error='Incorrect', user=si_un)
 
             return redirect("/dashboard/")
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up/")
 
 
@@ -180,8 +188,8 @@ def add_log(tracker_id):
     # ----------------------
     # adding a log to the tracker!
     # ----------------------
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         tracker = TRACKER.query.filter_by(tracker_id=tracker_id).first()
         choices = None
         if tracker.type == 'mc':
@@ -253,7 +261,8 @@ def add_log(tracker_id):
             db.session.commit()
 
             return redirect("/dashboard/")
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up/")
 
 
@@ -262,8 +271,8 @@ def update_tracker(tracker_id):
     # ----------------------
     # updating the tracker
     # ----------------------
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         choices = ""
         tracker = TRACKER.query.filter_by(tracker_id=tracker_id).first()
         if tracker.type == 'mc':
@@ -285,7 +294,8 @@ def update_tracker(tracker_id):
             except:
                 return render_template("update_tracker.html", error='Incorrect', user=si_un)
             return redirect("/dashboard/")
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up/")
 
 
@@ -294,8 +304,8 @@ def update_tracker(tracker_id):
 # ----------------------
 @app.route("/<string:tracker_id>/delete/", methods=['GET'])
 def delete_tracker(tracker_id):
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         tracker = TRACKER.query.filter_by(tracker_id=tracker_id).first()
         if tracker.type == 'num':
             try:
@@ -335,7 +345,8 @@ def delete_tracker(tracker_id):
             db.session.commit()
         # plot_homepage(si_un=si_un)
         return redirect("/dashboard/")
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up")
 
 
@@ -344,8 +355,8 @@ def delete_tracker(tracker_id):
 # ----------------------
 @app.route("/<int:tracker_id>/details/")
 def tracker_details(tracker_id):
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         tracker = TRACKER.query.filter_by(tracker_id=tracker_id).first()
 
         if tracker.type == 'num':
@@ -365,7 +376,8 @@ def tracker_details(tracker_id):
             plot_mcTracker(tracker_id, logs)
 
         return render_template("view_tracker.html", logs=logs, tracker=tracker, user=si_un)
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up")
 
 
@@ -374,8 +386,8 @@ def tracker_details(tracker_id):
 # ----------------------
 @app.route("/<int:tracker_id>/<int:log_id>/update/", methods=['GET', 'POST'])
 def update_log(log_id, tracker_id):
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         tracker = TRACKER.query.filter_by(tracker_id=tracker_id).first()
         choices = None
         choices_marked = None
@@ -451,7 +463,8 @@ def update_log(log_id, tracker_id):
                 db.session.commit()
             path_to_details = '/{tracker_id}/details/'.format(tracker_id=tracker_id)
             return redirect(path_to_details)
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up")
 
 
@@ -460,8 +473,8 @@ def update_log(log_id, tracker_id):
 # ----------------------
 @app.route("/<int:tracker_id>/<int:log_id>/delete/", methods=['GET'])
 def delete_log(tracker_id, log_id):
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         tracker = TRACKER.query.filter_by(tracker_id=tracker_id).first()
         if tracker.type == 'num':
             log = TRACKER_NUM.query.filter_by(log_id=log_id).delete()
@@ -478,7 +491,8 @@ def delete_log(tracker_id, log_id):
         db.session.commit()
         path_to_details = '/{tracker_id}/details/'.format(tracker_id=tracker_id)
         return redirect(path_to_details)
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up")
 
 
@@ -487,34 +501,55 @@ def delete_log(tracker_id, log_id):
 # ----------------------
 @app.route("/<int:tracker_id>/details/download/")
 def download_logs(tracker_id):
-    tracker_type = TRACKER.query.filter_by(tracker_id=tracker_id).first().type
-    if tracker_type == 'num':
-        logs = TRACKER_NUM.query.filter_by(tracker_id=tracker_id).all()
+    if "username" in session:
+        si_un = session['username']
+        try:
+            user_check = USER_TRACKER.query.filter_by(tracker_id=tracker_id).first().username
+            if user_check == si_un:
+                tracker_type = TRACKER.query.filter_by(tracker_id=tracker_id).first().type
+                if tracker_type == 'num':
+                    logs = TRACKER_NUM.query.filter_by(tracker_id=tracker_id).all()
 
-    elif tracker_type == 'bool':
-        logs = TRACKER_BOOL.query.filter_by(tracker_id=tracker_id).all()
+                elif tracker_type == 'bool':
+                    logs = TRACKER_BOOL.query.filter_by(tracker_id=tracker_id).all()
 
-    elif tracker_type == 'time_dur':
-        logs = TRACKER_TD.query.filter_by(tracker_id=tracker_id).all()
+                elif tracker_type == 'time_dur':
+                    logs = TRACKER_TD.query.filter_by(tracker_id=tracker_id).all()
 
-    elif tracker_type == 'mc':
-        logs = TRACKER_MC.query.filter_by(tracker_id=tracker_id).all()
+                elif tracker_type == 'mc':
+                    logs = TRACKER_MC.query.filter_by(tracker_id=tracker_id).all()
 
-    print("sending file......")
-    result, filename = log_export(tracker_type, logs)
-    print("file sent!", "\nNow, removing....")
-    os.remove("static/logs_download/" + filename)
-    return result
+                print("sending file......")
+                result, filename = log_export(tracker_type, logs)
+                print("file sent!", "\nNow, removing....")
+                os.remove("static/logs_download/" + filename)
+                return result
+            else:
+                return redirect("/log_error/")
 
+        except:
+            return redirect("/dashboard/")
+    else:
+        return redirect("/signin-up/")
+
+
+@app.route("/log_error/")
+def log_error():
+    if "username" in session:
+        return render_template("dashboard.html", log_error='true')
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
+        return redirect("/signin-up/")
 
 # ----------------------
 # Finally, to sign out
 # ----------------------
 @app.route("/signout/", methods=['GET'])
 def signout():
-    si_un = session['username']
     if "username" in session:
+        si_un = session['username']
         session.pop("username", None)
         return render_template("signup.html", signout='true')
-    else:
+
+    else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up/")

@@ -228,5 +228,12 @@ function w3_close() {
 </html>
 
 
+  {% if log_error == 'true' %}
+              <script>
+					window.alert("An error occurred. Did you try to manually enter the URL? Please try again from the 'Tracker Details' page.")
+					window.location.href = '/dashboard/'
+              </script>
+  {%endif%}
+
 </body>
 </html>
