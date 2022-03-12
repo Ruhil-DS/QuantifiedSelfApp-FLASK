@@ -1,4 +1,14 @@
-# SelfQuantifiedApp-FLASK
+# QuantifiedSelfApp-FLASK
+This is my submission for the final project for the course Modern Application Development I
+
+Project name - Lyf Record
+
+Roll number - 21f2001180
+
+Name - Pushpak Ruhil
+
+Submission date - 18 March, 2022
+
 
 
 --------------
@@ -13,6 +23,15 @@
         http://0.0.0.0:5000/
         
         http://127.0.0.1:5000/
+
+------------------
+# Test user
+The application can be tested using a test user if you don't wish to register. Below are the credentials for the same
+
+```python
+username = 'Pushpak'  # Case in-sensitive
+password = 'abcd'  # All lower case
+```
 
 ------------------
 # Lyf Record
