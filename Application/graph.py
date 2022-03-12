@@ -34,10 +34,11 @@ def plot_homepage(si_un):
     y_range = [i for i in range(0, 100)]
     plt.yticks(y_range)
     fig = plt.bar(x, y, color=c)
-    plt.savefig("static/images/homepage.png")
+    filename_path = "static/images/homepage_" + str(si_un) + ".png"
+    plt.savefig(filename_path)
     plt.close()
 
-    return None
+    return filename_path
 
 
 def plot_numTracker(tracker_id, logs):
@@ -58,10 +59,11 @@ def plot_numTracker(tracker_id, logs):
     plt.xticks(rotation=45)
     plt.tight_layout()
     fig = plt.plot(x_list, y_list, color='red')
-    plt.savefig("static/images/num_tracker.png")
+    filename_path = "static/images/num_tracker_" + str(tracker_id) + ".png"
+    plt.savefig(filename_path)
     plt.close()
 
-    return None
+    return filename_path
 
 
 def plot_BoolTracker(tracker_id, logs):
@@ -97,11 +99,11 @@ def plot_BoolTracker(tracker_id, logs):
     plt.xticks(rotation=45)
     plt.scatter(scatter_x, scatter_y, color='teal')
     plt.tight_layout()
-
-    plt.savefig("static/images/bool_tracker.png")
+    filename_path = "static/images/bool_tracker_" + str(tracker_id) + ".png"
+    plt.savefig(filename_path)
     plt.close()
 
-    return None
+    return filename_path
 
 
 def plot_mcTracker(tracker_id, logs):
@@ -131,10 +133,12 @@ def plot_mcTracker(tracker_id, logs):
     plt.yticks(y_range)
     plt.bar(x_list, y_list,
             color=['firebrick', 'palegreen', 'teal', 'cyan', 'orange', 'deeppink', 'lightcoral', 'cornflowerblue'])
-    plt.savefig("static/images/mc_tracker.png")
+
+    filename_path = "static/images/mc_tracker_" + str(tracker_id) + ".png"
+    plt.savefig(filename_path)
     plt.close()
 
-    return None
+    return filename_path
 
 
 def plot_tdTracker(tracker_id, logs):
@@ -158,7 +162,9 @@ def plot_tdTracker(tracker_id, logs):
 
     plt.scatter(x_list, y_list, color='red')
     plt.tight_layout()
-    plt.savefig("static/images/td_tracker.png")
+
+    filename_path = "static/images/td_tracker_" + str(tracker_id) + ".png"
+    plt.savefig(filename_path)
     plt.close()
 
-    return None
+    return filename_path

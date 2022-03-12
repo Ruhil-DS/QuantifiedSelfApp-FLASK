@@ -75,19 +75,9 @@
       </span>
       <br>
         <span class="h5" style="color: #20c4b0">Graph summary -</span>
-        {%if tracker.type == 'num' %}
-        <img src="/static/images/num_tracker.png" class="w3-white" />
 
-        {% elif tracker.type == 'bool' %}
-        <img src="/static/images/bool_tracker.png" class="w3-white" />
+        <img src="/{{filename_path}}" class="w3-white" />
 
-        {% elif tracker.type == 'mc' %}
-        <img src="/static/images/mc_tracker.png" class="w3-white" />
-
-        {% elif tracker.type == 'time_dur' %}
-        <img src="/static/images/td_tracker.png" class="w3-white" />
-
-        {%endif%}
 
         <span></span>
         <br><br>

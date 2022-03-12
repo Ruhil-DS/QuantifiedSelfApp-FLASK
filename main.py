@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 # Initialising the DB using SQLAlchemy, pushing content to the app
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 app.app_context().push()
 
@@ -16,4 +17,4 @@ from Application.controller_index import *
 from Application.controller_dash import *
 
 # Running the app
-app.run(debug=True)
+app.run(debug=False)

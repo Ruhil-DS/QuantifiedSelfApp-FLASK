@@ -107,10 +107,10 @@ def dashboard(): # Renders the dashboard according to the session.
         # ----------------------
 
         # Trend line graph ->
-        plot_homepage(si_un=si_un)  # Function from graph.py
+        filename_path = plot_homepage(si_un=si_un)  # Function from graph.py
         # ----------------------
         return render_template("dashboard.html", user=si_un, streak=streak, tracker_count=tracker_count,
-                               member_since=member_since, trackers=trackers)
+                               member_since=member_since, trackers=trackers, filename_path=filename_path)
 
     else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect('/signin-up/')
@@ -361,21 +361,21 @@ def tracker_details(tracker_id):
 
         if tracker.type == 'num':
             logs = TRACKER_NUM.query.filter_by(tracker_id=tracker_id).all()
-            plot_numTracker(tracker_id, logs)
+            filename_path = plot_numTracker(tracker_id, logs)
 
         elif tracker.type == 'bool':
             logs = TRACKER_BOOL.query.filter_by(tracker_id=tracker_id).all()
-            plot_BoolTracker(tracker_id, logs)
+            filename_path = plot_BoolTracker(tracker_id, logs)
 
         elif tracker.type == 'time_dur':
             logs = TRACKER_TD.query.filter_by(tracker_id=tracker_id).all()
-            plot_tdTracker(tracker_id, logs)
+            filename_path = plot_tdTracker(tracker_id, logs)
 
         elif tracker.type == 'mc':
             logs = TRACKER_MC.query.filter_by(tracker_id=tracker_id).all()
-            plot_mcTracker(tracker_id, logs)
+            filename_path = plot_mcTracker(tracker_id, logs)
 
-        return render_template("view_tracker.html", logs=logs, tracker=tracker, user=si_un)
+        return render_template("view_tracker.html", logs=logs, tracker=tracker, user=si_un, filename_path=filename_path)
 
     else:  # If user is not in the session, redirect to login page. ((prevents direct access of URI)
         return redirect("/signin-up")
