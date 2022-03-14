@@ -1,8 +1,5 @@
 from flask import render_template
-from flask import request, redirect
-from flask import session
 from flask import current_app as app
-from .models import *
 
 '''
 # Code to generate random secret_key. Was randomly generating the secret key so that it doesn't redirect to the dashboard 

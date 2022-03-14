@@ -15,7 +15,18 @@ Submission date - 18 March, 2022
 
 # How to use
   - Open your terminal in the respective folder of the repository/project.
+  - First, you need to install the dependencies. Simply run the following command
+
+            pip install -r requirements.txt
+
+    This would install all the required dependencies onto your machine/environment.
+
+
+
   - From there, simply run the command ```python3 main.py``` (recommended) or ```python main.py```
+    - If you are running the server from a web service like Replit, you will have to specify the host in the app.run() 
+    command. In the main file, simply replace ```app.run()``` with ```app.run(host='0.0.0.0')``` 
+    
   - Then, assuming the default port 5000, simply head to any of the following URLs 
         
         http://localhost:5000/
@@ -23,7 +34,8 @@ Submission date - 18 March, 2022
         http://0.0.0.0:5000/
         
         http://127.0.0.1:5000/
-
+    A URL will also be displayed on the terminal, which can be referred to visit the web application's site.
+    
 ------------------
 # Test user
 The application can be tested using a test user if you don't wish to register. Below are the credentials for the same
