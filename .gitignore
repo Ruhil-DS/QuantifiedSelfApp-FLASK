@@ -7,3 +7,5 @@ Application/.DS_Store
 .DS_Store
 Application/.DS_Store
 static/.DS_Store
+static/images/homepage_pushpak.png
+*.png
